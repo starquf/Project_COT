@@ -11,6 +11,11 @@ public class StageBtnScript : MonoBehaviour
 
     private Tween changeTween;
 
+    private void Awake()
+    {
+        button = GetComponent<Button>();
+    }
+
     private void Start()
     {
         cvs = GetComponent<CanvasGroup>();
@@ -23,6 +28,6 @@ public class StageBtnScript : MonoBehaviour
         cvs.alpha = 0f;
         cvs.interactable = false;
 
-        changeTween = cvs.DOFade(1f, 1f).SetDelay(delay).OnComplete(() => { cvs.interactable = true; });
+        changeTween = cvs.DOFade(1f, 0.9f).SetDelay(delay).OnComplete(() => { cvs.interactable = true; });
     }
 }

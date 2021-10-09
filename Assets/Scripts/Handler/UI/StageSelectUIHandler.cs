@@ -59,7 +59,7 @@ public class StageSelectUIHandler : UI
 
         for (int i = 0; i < stageButtons.Count; i++)
         {
-            stageButtons[i].ShowStage(i / 6f + 0.3f);
+            stageButtons[i].ShowStage(i / 7f + 0.3f);
         }
     }
 
