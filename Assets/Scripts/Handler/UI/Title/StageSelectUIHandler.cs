@@ -41,7 +41,7 @@ public class StageSelectUIHandler : UI
                 GameManager.Instance.stage = a;
 
                 // 해당 스테이지로 이동하는 로직 구현
-                SceneManager.LoadScene("InGame");
+                GameManager.Instance.LoadScene("InGame");
             });
         }
 

@@ -34,13 +34,21 @@ public class ClockHandler : MonoBehaviour
 
             timeIdx = (timeIdx + 1) % ((int)TimeDay.NIGHT + 1);
 
-            th.ChangeTime((TimeDay)timeIdx);
-
-            if (th.currentTimeDay.Equals(TimeDay.DAWN))
+            if (((TimeDay)timeIdx).Equals(TimeDay.DAWN))
             {
                 GameManager.Instance.timeLimit--;
+
+                if (GameManager.Instance.timeLimit <= -1)
+                {
+                    // ¤»¤» ÀÌ°É ¸ø±ú´©
+                    GameManager.Instance.timeLimit = 0;
+                    return;
+                }
+
                 GameManager.Instance.onUpdateUI.Invoke();
             }
+
+            th.ChangeTime((TimeDay)timeIdx);
 
             nextTimeImg.DOColor(th.GetTimeColor((TimeDay)((timeIdx + 1) % ((int)TimeDay.NIGHT + 1))), th.ColorChangeDur);
 

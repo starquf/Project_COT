@@ -6,6 +6,6 @@ public class EndPos : StageObj
 {
     public override void Interact()
     {
-        print("µµÂøÁöÁ¡");
+        GameManager.Instance.onClear?.Invoke();
     }
 }

@@ -6,7 +6,7 @@ public class StartTile : Tile
 {
     public GameObject playerObj = null;
 
-    private void Start()
+    protected override void Start()
     {
         Instantiate(playerObj, transform.position, Quaternion.identity);
     }

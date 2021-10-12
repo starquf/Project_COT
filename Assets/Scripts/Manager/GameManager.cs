@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class OnChangeTimeHandler : UnityEvent<TimeDay, Color, float>
 { }
@@ -80,4 +82,17 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public UnityEvent onUpdateUI = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent onClear = new UnityEvent();
+    [HideInInspector]
+    public UnityEvent onFailed = new UnityEvent();
+
+    public void LoadScene(string sceneName)
+    {
+        moveLimit = 10;
+        timeLimit = 3;
+
+        DOTween.KillAll();
+        SceneManager.LoadScene(sceneName);
+    }
 }

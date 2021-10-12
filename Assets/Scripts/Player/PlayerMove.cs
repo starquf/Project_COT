@@ -13,6 +13,9 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float moveDur = 0.5f;
     private bool canMove = true;
 
+    private bool isCleared = false;
+    private bool isEnable = true;
+
     private LayerMask whatIsWall;
     private LayerMask whatIsGround;
     private LayerMask whatIsObj;
@@ -30,10 +33,20 @@ public class PlayerMove : MonoBehaviour
 
         normalScale = transform.localScale;
         bigScale = new Vector3(normalScale.x + 0.1f, normalScale.y + 0.1f, 1f);
+
+        GameManager.Instance.onClear.AddListener(() => 
+        { 
+            isEnable = false;
+            isCleared = true;
+        });
+
+        GameManager.Instance.onFailed.AddListener(() => isEnable = false);
     }
 
     private void Update()
     {
+        if (!isEnable) return;
+
         GetDrag();
     }
 
@@ -147,12 +160,19 @@ public class PlayerMove : MonoBehaviour
             Sequence bigSeq = DOTween.Sequence()
             .Append(transform.DOScale(bigScale, 0.15f))
             .Append(transform.DOScale(normalScale, 0.15f));
-            
-            GameManager.Instance.moveLimit--;
-            GameManager.Instance.onUpdateUI.Invoke();
 
             groundIt?.Interact();
             objIt?.Interact();
+
+            GameManager.Instance.moveLimit--;
+
+            if (!isCleared && GameManager.Instance.moveLimit <= 0)
+            {
+                // ¤»¤» ÀÌ°É ¸ø±ú´©
+                GameManager.Instance.onFailed?.Invoke();
+            }
+
+            GameManager.Instance.onUpdateUI.Invoke();
         }
         else
         {
