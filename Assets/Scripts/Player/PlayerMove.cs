@@ -87,9 +87,10 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
-    private bool CheckGround(Vector3 dir, out IInteractable it)
+    private bool CheckGround(Vector3 dir, out IInteractable it, out TileType tileType)
     {
         it = null;
+        tileType = TileType.NONE;
 
         // 벽이 있는지 체크
         if (Physics2D.Raycast(transform.position, dir, 1f, whatIsWall))
@@ -98,6 +99,11 @@ public class PlayerMove : MonoBehaviour
         }
 
         Collider2D coll = Physics2D.OverlapPoint(transform.position + dir, whatIsGround);
+
+        if (coll != null)
+        {
+            tileType = coll.GetComponent<Tile>().tileType;
+        }
 
         // 이동 가능한지 체크
         return CheckMoveable(dir, coll, out it);
@@ -140,13 +146,15 @@ public class PlayerMove : MonoBehaviour
         return true;
     }
 
-    private void Move(Vector3 dir)
+    private void Move(Vector3 dir, bool isRepeat = false)
     {
         IInteractable groundIt = null;
         IInteractable objIt = null;
 
+        TileType tileType;
+
         // 땅 체크
-        if (CheckGround(dir, out groundIt))
+        if (CheckGround(dir, out groundIt, out tileType))
         {
             // 아이템 체크
             if (!CheckObjMoveable(dir, out objIt))
@@ -155,7 +163,6 @@ public class PlayerMove : MonoBehaviour
             }
 
             canMove = false;
-            transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { canMove = true; });
 
             Sequence bigSeq = DOTween.Sequence()
             .Append(transform.DOScale(bigScale, 0.15f))
@@ -164,20 +171,42 @@ public class PlayerMove : MonoBehaviour
             groundIt?.Interact();
             objIt?.Interact();
 
-            GameManager.Instance.moveLimit--;
-
-            if (!isCleared && GameManager.Instance.moveLimit <= 0)
+            if (!isRepeat)
             {
-                // ㅋㅋ 이걸 못깨누
-                GameManager.Instance.onFailed?.Invoke();
+                GameManager.Instance.moveLimit--;
+
+                if (!isCleared && GameManager.Instance.moveLimit <= 0)
+                {
+                    // ㅋㅋ 이걸 못깨누
+                    GameManager.Instance.onFailed?.Invoke();
+                }
+
+                GameManager.Instance.onUpdateUI.Invoke();
             }
 
-            GameManager.Instance.onUpdateUI.Invoke();
+            switch (tileType)
+            {
+                case TileType.WATER:
+
+                    TimeDay currentDay = GameManager.Instance.timeDayhandler.currentTimeDay;
+
+                    if (currentDay.Equals(TimeDay.NIGHT))
+                    {
+                        transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { Move(dir, true); });
+                        return;
+                    }
+
+                    break;
+            }
+
+            transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { canMove = true; });
         }
         else
         {
             // 이동 불가
             Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
+
+            canMove = true;
         }
     }
 }
