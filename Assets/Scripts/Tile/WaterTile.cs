@@ -18,7 +18,7 @@ public class WaterTile : Tile
 
         GameManager.Instance.onChangeTime.AddListener((time, color, dur) => 
         {
-            if (time.Equals(TimeDay.NIGHT))
+            if (time.Equals(TimeDay.NIGHT) || time.Equals(TimeDay.AFTERNOON))
             {
                 iceSpr.DOFade(1f, dur);
             }
@@ -27,5 +27,12 @@ public class WaterTile : Tile
                 iceSpr.DOFade(0f, dur);
             }
         });
+    }
+
+    public override bool CheckMoveable(Vector3 dir)
+    {
+        TimeDay time = GameManager.Instance.timeDayhandler.currentTimeDay;
+
+        return time.Equals(TimeDay.NIGHT) || time.Equals(TimeDay.AFTERNOON);
     }
 }

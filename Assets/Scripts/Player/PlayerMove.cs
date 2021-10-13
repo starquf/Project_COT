@@ -188,15 +188,8 @@ public class PlayerMove : MonoBehaviour
             {
                 case TileType.WATER:
 
-                    TimeDay currentDay = GameManager.Instance.timeDayhandler.currentTimeDay;
-
-                    if (currentDay.Equals(TimeDay.NIGHT))
-                    {
-                        transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { Move(dir, true); });
-                        return;
-                    }
-
-                    break;
+                    transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { Move(dir, true); });
+                    return;
             }
 
             transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { canMove = true; });
