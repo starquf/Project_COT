@@ -204,7 +204,10 @@ public class PlayerMove : MonoBehaviour
         else
         {
             // 이동 불가
-            Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
+            if (!isRepeat)
+            {
+                Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
+            }
 
             canMove = true;
         }
