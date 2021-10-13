@@ -35,12 +35,7 @@ public class ClearUIHandler : MonoBehaviour
 
         cvs.blocksRaycasts = true;
 
-        Sequence seq = DOTween.Sequence()
-            .Append(cvs.DOFade(1f, 0.55f))
-            .AppendInterval(0.23f)
-            .AppendCallback(() => clearBG.alpha = 1f)
-            .Append(clearBG.transform.DOScale(Vector3.one, 0.48f).SetEase(Ease.OutBack))
-            .AppendCallback(() => cvs.interactable = true);
+        ShowPanel();
     }
 
     private void ShowFail()
@@ -49,11 +44,19 @@ public class ClearUIHandler : MonoBehaviour
 
         cvs.blocksRaycasts = true;
 
+        ShowPanel();
+    }
+
+    private void ShowPanel()
+    {
         Sequence seq = DOTween.Sequence()
-            .Append(cvs.DOFade(1f, 0.55f))
-            .AppendInterval(0.23f)
-            .AppendCallback(() => clearBG.alpha = 1f)
-            .Append(clearBG.transform.DOScale(Vector3.one, 0.48f).SetEase(Ease.OutBack))
+            .Append(cvs.DOFade(1f, 0.6f))
+            .AppendInterval(0.1f)
+            .AppendCallback(() => {
+                clearBG.alpha = 1f;
+                clearBG.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
+            })
+            .Append(clearBG.transform.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack))
             .AppendCallback(() => cvs.interactable = true);
     }
 }
