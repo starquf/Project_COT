@@ -47,7 +47,7 @@ public class SunHandler : MonoBehaviour
                 {
                     transform.position = new Vector3(moveX.y + 4f, transform.position.y);
                     ChangeLightDir(lightTarget.position);
-                    ChangeLightPar(sunColor, (changeDur / 2f), intensity:1.2f);
+                    ChangeLightPar(sunColor, (changeDur / 2f), intensity:1.1f);
 
                     sr.sprite = sunSpr;
 
@@ -65,7 +65,7 @@ public class SunHandler : MonoBehaviour
 
             case TimeDay.AFTERNOON:
 
-                ChangeLightPar(sunSetColor, changeDur, shadow:0.5f);
+                ChangeLightPar(sunSetColor, changeDur, intensity:0.95f, shadow:0.5f);
                 ChangePos(moveX.x, changeDur, () => ChangeLightDir(lightTarget.position));
 
                 break;
@@ -80,7 +80,7 @@ public class SunHandler : MonoBehaviour
                     sr.sprite = moonSpr;
 
                     l2D.intensity = 0f;
-                    ChangeLightPar(moonColor, (changeDur / 2f), 0.6f, 0.7f);
+                    ChangeLightPar(moonColor, (changeDur / 2f) + 0.2f, 0.5f, 0.7f);
 
                     ChangePos(((moveX.x + moveX.y) / 2f) + 1f, (changeDur / 2f) + 0.2f, () => ChangeLightDir(lightTarget.position));
                 }, Ease.InSine);
@@ -112,7 +112,7 @@ public class SunHandler : MonoBehaviour
         lightTrans.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
-    private void ChangeLightPar(Color lightColor, float dur, float intensity = 1f, float shadow = 0.3f)
+    private void ChangeLightPar(Color lightColor, float dur, float intensity = 1f, float shadow = 0.25f)
     {
         l2D.color = lightColor;
         DOTween.To(() => l2D.intensity, x => l2D.intensity = x, intensity, dur);

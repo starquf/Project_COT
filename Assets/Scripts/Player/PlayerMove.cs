@@ -159,6 +159,11 @@ public class PlayerMove : MonoBehaviour
             // 아이템 체크
             if (!CheckObjMoveable(dir, out objIt))
             {
+                if (!isRepeat)
+                {
+                    Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
+                }
+
                 return;
             }
 

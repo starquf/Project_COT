@@ -20,11 +20,11 @@ public class WaterTile : Tile
         {
             if (time.Equals(TimeDay.NIGHT) || time.Equals(TimeDay.AFTERNOON))
             {
-                iceSpr.DOFade(1f, dur);
+                iceSpr.DOFade(1f, dur + 0.3f);
             }
             else
             {
-                iceSpr.DOFade(0f, dur);
+                iceSpr.DOFade(0f, dur + 0.2f);
             }
         });
     }

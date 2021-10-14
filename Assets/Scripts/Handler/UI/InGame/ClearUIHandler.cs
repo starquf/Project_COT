@@ -16,10 +16,23 @@ public class ClearUIHandler : MonoBehaviour
     public Button homeBtn;
     public Button nextBtn;
 
+    [Header("º° °ü·Ã")]
+    public Transform starBG;
+
+    public Sprite emptyStarImg;
+    public Sprite fullStarImg;
+
+    private List<Image> stars = new List<Image>();
+
     private void Start()
     {
         cvs = GetComponent<CanvasGroup>();
         clearBG = transform.GetChild(0).GetComponent<CanvasGroup>();
+
+        starBG.GetComponentsInChildren(stars);
+        stars.RemoveAt(0);
+
+        SetStar(0);
 
         clearBG.transform.localScale = new Vector3(0f, 0f, 1f);
 
@@ -35,6 +48,8 @@ public class ClearUIHandler : MonoBehaviour
 
         cvs.blocksRaycasts = true;
 
+        SetStar(2);
+
         ShowPanel();
     }
 
@@ -43,6 +58,7 @@ public class ClearUIHandler : MonoBehaviour
         clearTxt.text = "Stage Failed";
 
         cvs.blocksRaycasts = true;
+        nextBtn.gameObject.SetActive(false);
 
         ShowPanel();
     }
@@ -56,7 +72,15 @@ public class ClearUIHandler : MonoBehaviour
                 clearBG.alpha = 1f;
                 clearBG.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
             })
-            .Append(clearBG.transform.DOScale(Vector3.one, 0.4f).SetEase(Ease.OutBack))
+            .Append(clearBG.transform.DOScale(Vector3.one, 0.47f).SetEase(Ease.OutBack))
             .AppendCallback(() => cvs.interactable = true);
+    }
+
+    private void SetStar(int starCount)
+    {
+        for (int i = 0; i < stars.Count; i++)
+        {
+            stars[i].sprite = i < starCount ? fullStarImg : emptyStarImg;
+        }
     }
 }
