@@ -25,7 +25,7 @@ public class ClockHandler : MonoBehaviour
     {
         clockBtn.onClick.AddListener(() =>
         {
-            if (!canChangeTime) return;
+            if (!canChangeTime || !GameManager.Instance.timeDayhandler.CanChangeTime) return;
 
             canChangeTime = false;
 

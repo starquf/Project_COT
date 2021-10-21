@@ -212,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   image: {fileID: 6032530132531458229}
   btn: {fileID: 6032530133241633173}
-  rotateDur: 0.5
+  rotateDur: 0.45
   changeColor: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
 --- !u!225 &-7315332799110705687
 CanvasGroup:

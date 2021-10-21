@@ -87,6 +87,14 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    private bool CheckCurrentGround()
+    {
+        Collider2D coll = Physics2D.OverlapPoint(transform.position, whatIsGround);
+
+        // 이동 가능한지 체크
+        return CheckMoveable(Vector3.zero, coll);
+    }
+
     private bool CheckGround(Vector3 dir, out IInteractable it, out TileType tileType)
     {
         it = null;
@@ -109,6 +117,20 @@ public class PlayerMove : MonoBehaviour
         return CheckMoveable(dir, coll, out it);
     }
 
+    private bool CheckCurrentObjMoveable()
+    {
+        Collider2D coll = Physics2D.OverlapPoint(transform.position, whatIsObj);
+
+        // 아이템이 없으면
+        if (coll == null)
+        {
+            return true;
+        }
+
+        // 아이템이 있는데 이동 가능한지 체크
+        return CheckMoveable(Vector3.zero, coll);
+    }
+
     private bool CheckObjMoveable(Vector3 dir, out IInteractable it)
     {
         it = null;
@@ -123,6 +145,24 @@ public class PlayerMove : MonoBehaviour
 
         // 아이템이 있는데 이동 가능한지 체크
         return CheckMoveable(dir, coll, out it);
+    }
+
+    private bool CheckMoveable(Vector3 dir, Collider2D coll)
+    {
+        if (coll == null)
+        {
+            return false;
+        }
+
+        IMoveable moveable = coll.GetComponent<IMoveable>();
+
+        // 땅이 있는지와 이동 가능한 땅인지 체크
+        if (moveable == null || !moveable.CheckMoveable(dir))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     private bool CheckMoveable(Vector3 dir, Collider2D coll, out IInteractable it)
@@ -153,16 +193,24 @@ public class PlayerMove : MonoBehaviour
 
         TileType tileType;
 
+        GameManager.Instance.timeDayhandler.CanChangeTime = false;
+
+        // 현재 땅 + 현재 옵젝 확인
+        if (!CheckCurrentGround() || !CheckCurrentObjMoveable())
+        {
+            // 이동 불가
+            CantMove(isRepeat);
+
+            return;
+        }
+            
         // 땅 체크
         if (CheckGround(dir, out groundIt, out tileType))
         {
             // 아이템 체크
             if (!CheckObjMoveable(dir, out objIt))
             {
-                if (!isRepeat)
-                {
-                    Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
-                }
+                CantMove(isRepeat);
 
                 return;
             }
@@ -197,17 +245,27 @@ public class PlayerMove : MonoBehaviour
                     return;
             }
 
-            transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { canMove = true; });
+            transform.DOMove(transform.position + dir, moveDur).OnComplete(() => 
+            { 
+                canMove = true;
+                GameManager.Instance.timeDayhandler.CanChangeTime = true; 
+            });
         }
         else
         {
             // 이동 불가
-            if (!isRepeat)
-            {
-                Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
-            }
-
-            canMove = true;
+            CantMove(isRepeat);
         }
+    }
+
+    private void CantMove(bool isRepeat)
+    {
+        if (!isRepeat)
+        {
+            Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
+        }
+
+        GameManager.Instance.timeDayhandler.CanChangeTime = true;
+        canMove = true;
     }
 }

@@ -14,13 +14,18 @@ public class TimeDayHander : MonoBehaviour
     [SerializeField] private float colorChangeDur = 1f;
     public float ColorChangeDur => colorChangeDur;
 
+    public bool CanChangeTime { get; set; }
+
     private void Start()
     {
+        CanChangeTime = true;
         GameManager.Instance.timeDayhandler = this;
     }
 
     public void ChangeTime(TimeDay time)
     {
+        if (!CanChangeTime) return;
+
         int timeIdx = (int)time;
         currentTimeDay = time;
 

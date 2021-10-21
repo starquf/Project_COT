@@ -10,6 +10,7 @@ public class ClearUIHandler : MonoBehaviour
     private CanvasGroup clearBG;
 
     public Text clearTxt;
+    public Color failColor;
     
     [Space(10f)]
     public Button replayBtn;
@@ -34,7 +35,9 @@ public class ClearUIHandler : MonoBehaviour
 
         SetStar(0);
 
-        clearBG.transform.localScale = new Vector3(0f, 0f, 1f);
+        cvs.alpha = 0f;
+        clearBG.alpha = 0f;
+        //clearBG.transform.localScale = new Vector3(0f, 0f, 1f);
 
         GameManager.Instance.onClear.AddListener(ShowClear);
         GameManager.Instance.onFailed.AddListener(ShowFail);
@@ -44,18 +47,18 @@ public class ClearUIHandler : MonoBehaviour
 
     private void ShowClear()
     {
-        clearTxt.text = "Stage Clear";
-
-        cvs.blocksRaycasts = true;
+        clearTxt.text = "C L E A R";
 
         SetStar(2);
+        cvs.blocksRaycasts = true;
 
         ShowPanel();
     }
 
     private void ShowFail()
     {
-        clearTxt.text = "Stage Failed";
+        clearTxt.text = "F A I L E D";
+        clearTxt.color = failColor;
 
         cvs.blocksRaycasts = true;
         nextBtn.gameObject.SetActive(false);
@@ -66,21 +69,60 @@ public class ClearUIHandler : MonoBehaviour
     private void ShowPanel()
     {
         Sequence seq = DOTween.Sequence()
-            .Append(cvs.DOFade(1f, 0.6f))
-            .AppendInterval(0.1f)
-            .AppendCallback(() => {
-                clearBG.alpha = 1f;
-                clearBG.transform.localScale = new Vector3(0.5f, 0.5f, 1f);
-            })
-            .Append(clearBG.transform.DOScale(Vector3.one, 0.47f).SetEase(Ease.OutBack))
+            .Append(cvs.DOFade(1f, 0.5f))
+            .Append(clearBG.DOFade(1f, 0.85f).SetEase(Ease.OutSine))
+            .Append(clearTxt.transform.DOLocalMoveY(-200f, 0.45f).From(true))
+            .AppendCallback(() => ShowStar())
+            .AppendInterval(0.4f)
+            .AppendCallback(() => ShowButton())
+            .AppendInterval(0.5f)
             .AppendCallback(() => cvs.interactable = true);
+
+    }
+
+    private void ShowButton()
+    {
+        List<CanvasGroup> btns = new List<CanvasGroup>();
+
+        btns.Add(replayBtn.GetComponent<CanvasGroup>());
+        btns.Add(homeBtn.GetComponent<CanvasGroup>());
+        btns.Add(nextBtn.GetComponent<CanvasGroup>());
+
+        for (int i = 0; i < btns.Count; i++)
+        {
+            btns[i].alpha = 0f;
+            btns[i].DOFade(1f, 1.3f)
+                .SetEase(Ease.OutSine);
+        }
     }
 
     private void SetStar(int starCount)
     {
         for (int i = 0; i < stars.Count; i++)
         {
-            stars[i].sprite = i < starCount ? fullStarImg : emptyStarImg;
+            int a = i;
+
+            stars[a].sprite = a < starCount ? fullStarImg : emptyStarImg;
+        }
+    }
+
+    private void ShowStar()
+    {
+        Vector3 bigImg = new Vector3(1.3f, 1.3f, 1f);
+
+        for (int i = 0; i < stars.Count; i++)
+        {
+            stars[i].DOFade(1f, 0.3f)
+                .SetDelay(i * 0.3f)
+                .SetEase(Ease.Linear);
+
+            if (stars[i].sprite == fullStarImg)
+            {
+                Sequence seq = DOTween.Sequence()
+                    .AppendInterval(i * 0.3f)
+                    .Append(stars[i].transform.DOScale(bigImg, 0.17f))
+                    .Append(stars[i].transform.DOScale(Vector3.one, 0.17f));
+            }
         }
     }
 }
