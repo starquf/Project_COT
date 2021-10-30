@@ -12,10 +12,6 @@ public class StageSelectUIHandler : UI
 
     public Button cancelBtn;
 
-    [Header("Å×¸¶")]
-    public Transform themeTrans;
-    public Text themeName;
-
     [Header("Ã©ÅÍ UI")]
     public UI chapterSelectHandler;
 
@@ -44,8 +40,6 @@ public class StageSelectUIHandler : UI
                 GameManager.Instance.LoadScene("InGame");
             });
         }
-
-        themeStartPos = themeTrans.localPosition;
     }
 
     public override void Open()
@@ -54,12 +48,9 @@ public class StageSelectUIHandler : UI
 
         cvs.alpha = 1;
 
-        themeTrans.localPosition = themeStartPos;
-        themeTrans.DOLocalMoveX(-800f, 0.65f).From();
-
         for (int i = 0; i < stageButtons.Count; i++)
         {
-            stageButtons[i].ShowStage(i / 7f + 0.3f);
+            stageButtons[i].ShowStage(i * 0.2f + 0.3f);
         }
     }
 

@@ -7,10 +7,10 @@ using System;
 
 public class ChapterSelectUIHandler : UI
 {
-    private float sizeX = 550f;
+    private float sizeX = 650f;
 
-    private readonly Vector3 bigSize = new Vector3(0.9f, 0.9f, 1f);
-    private readonly Vector3 smallSize = new Vector3(0.7f, 0.7f, 1f);
+    private readonly Vector3 bigSize = new Vector3(1f, 1f, 1f);
+    private readonly Vector3 smallSize = new Vector3(0.8f, 0.8f, 1f);
 
     private Vector3 dragStartPos = Vector3.zero;
     private Vector3 dragPos = Vector3.zero;
@@ -24,8 +24,18 @@ public class ChapterSelectUIHandler : UI
 
     public UI stageSelectHandler;
 
+    [Header("¹öÆ°UI")]
+    public CanvasGroup buttonUI;
+    private ButtonUIHandler buttonUIHandler;
+
     private void Start()
     {
+        buttonUIHandler = buttonUI.GetComponent<ButtonUIHandler>();
+
+        buttonUI.alpha = 0f;
+        buttonUI.interactable = false;
+        buttonUI.blocksRaycasts = false;
+
         maxChapterIdx = chapterUIs.Count - 1;
 
         for (int i = 0; i < chapterUIs.Count; i++)
@@ -130,6 +140,24 @@ public class ChapterSelectUIHandler : UI
     public override void Open()
     {
         base.Open();
-        this.transform.DOLocalMoveY(transform.localPosition.y + 1920f, 1.2f).SetEase(Ease.InOutQuad);
+        this.transform.DOLocalMoveY(transform.localPosition.y + 1920f, 1.33f).SetEase(Ease.InOutQuad);
+
+        buttonUI.DOFade(1f, 0.5f)
+            .SetDelay(1f);
+
+        buttonUIHandler.topPanel.DOLocalMoveY(350f, 0.63f)
+            .SetDelay(1f)
+            .From(true)
+            .OnStart(() => {
+                //buttonUI.alpha = 1f;
+                buttonUI.interactable = true;
+                buttonUI.blocksRaycasts = true;
+            })
+            .SetEase(Ease.OutSine);
+
+        buttonUIHandler.bottomPanel.DOLocalMoveY(-350f, 0.63f)
+            .SetDelay(1f)
+            .From(true)
+            .SetEase(Ease.OutSine);
     }
 }

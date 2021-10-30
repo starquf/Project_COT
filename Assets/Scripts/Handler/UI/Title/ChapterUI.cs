@@ -17,6 +17,10 @@ public class ChapterUI : MonoBehaviour
     private Color originalColor;
     public Color changeColor;
 
+    private readonly Vector3 originSize = new Vector3(1f, 1f, 1f);
+    private readonly Vector3 bigSize = new Vector3(1.15f, 1.15f, 1f);
+    private readonly Vector3 rot = new Vector3(0f, 180f, 0f);
+
     private void Awake()
     {
         cvs = GetComponent<CanvasGroup>();
@@ -30,26 +34,26 @@ public class ChapterUI : MonoBehaviour
 
     public void ShowStage()
     {
-        image.transform.DORotate(new Vector3(0f, 180f), rotateDur).OnUpdate(() => {
+        image.transform.DORotate(rot, rotateDur).OnUpdate(() => {
             if (image.transform.eulerAngles.y > 90f)
             {
                 image.color = changeColor;
             }
         });
 
-        image.transform.DOScale(new Vector3(1.2f, 1.2f), rotateDur).SetEase(Ease.OutBack);
+        image.transform.DOScale(bigSize, rotateDur).SetEase(Ease.OutBack);
     }
 
     public void CloseStage()
     {
-        image.transform.DORotate(new Vector3(0f, 0f), rotateDur).OnUpdate(() => {
+        image.transform.DORotate(Vector3.zero, rotateDur).OnUpdate(() => {
             if (image.transform.eulerAngles.y < 90f)
             {
                 image.color = originalColor;
             }
         });
 
-        image.transform.DOScale(new Vector3(1f, 1f), rotateDur);
+        image.transform.DOScale(originSize, rotateDur);
     }
 
     public void SetInteract(bool active)

@@ -7,7 +7,7 @@ using DG.Tweening;
 
 public class TimeDayHander : MonoBehaviour
 {
-    public TimeDay currentTimeDay = TimeDay.DAWN;
+    public TimeDay currentTimeDay { get; private set; } = TimeDay.DAWN;
 
     [SerializeField] private List<Color> timeColors = new List<Color>();
 

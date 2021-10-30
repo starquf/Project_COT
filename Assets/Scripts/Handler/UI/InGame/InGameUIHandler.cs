@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,10 @@ public class InGameUIHandler : MonoBehaviour
 
     public void UpdateUI()
     {
-        moveText.text = $"{GameManager.Instance.moveLimit}»∏";
-        timeText.text = $"{GameManager.Instance.timeLimit}¿œ";
+        int tl = GameManager.Instance.timeLimit;
+        int ml = GameManager.Instance.moveLimit;
+
+        moveText.text = ml.ToString();
+        timeText.text = $"D-{(tl == 0 ? "Day" : tl.ToString())}";
     }
 }
