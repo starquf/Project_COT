@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class StageSelectUIHandler : UI
+public class StageSelectUIHandler : UIHandler
 {
     [Header("스테이지 UI 설정")]
     [SerializeField] private List<StageBtnScript> stageButtons = new List<StageBtnScript>();
@@ -13,10 +13,12 @@ public class StageSelectUIHandler : UI
     public Button cancelBtn;
 
     [Header("챕터 UI")]
-    public UI chapterSelectHandler;
+    public UIHandler chapterSelectHandler;
 
     private Color colorTrans = new Color(1f, 1f, 1f, 0f);
     private Vector3 themeStartPos = Vector3.zero;
+
+    private readonly string inGameScene = "InGame";
 
     private void Start()
     {
@@ -37,7 +39,7 @@ public class StageSelectUIHandler : UI
                 GameManager.Instance.stage = a;
 
                 // 해당 스테이지로 이동하는 로직 구현
-                GameManager.Instance.LoadScene("InGame");
+                GameManager.Instance.LoadScene(inGameScene);
             });
         }
     }

@@ -49,7 +49,7 @@ public class ClearUIHandler : MonoBehaviour
     {
         clearTxt.text = "C L E A R";
 
-        SetStar(2);
+        SetStar(GameManager.Instance.isGemCollected ? 3 : 2);
         cvs.blocksRaycasts = true;
 
         ShowPanel();

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class UI : MonoBehaviour
+public abstract class UIHandler : MonoBehaviour
 {
     protected CanvasGroup cvs;
     public bool isOpened = false;
@@ -36,7 +36,7 @@ public abstract class UI : MonoBehaviour
         cvs.interactable = false;
     }
 
-    protected void OpenUI(UI ui)
+    protected void OpenUI(UIHandler ui)
     {
         ui.Open();
         this.Close();

@@ -9,6 +9,8 @@ public class ChapterUI : MonoBehaviour
     private CanvasGroup cvs;
 
     public Image image = null;
+    private Shadow imgShadow = null;
+
     public Button btn = null;
 
     public float rotateDur = 0.5f;
@@ -24,6 +26,8 @@ public class ChapterUI : MonoBehaviour
     private void Awake()
     {
         cvs = GetComponent<CanvasGroup>();
+
+        imgShadow = image.GetComponent<Shadow>();    
     }
 
     private void Start()
@@ -34,10 +38,15 @@ public class ChapterUI : MonoBehaviour
 
     public void ShowStage()
     {
+        bool b = false;
+
         image.transform.DORotate(rot, rotateDur).OnUpdate(() => {
-            if (image.transform.eulerAngles.y > 90f)
+            if (image.transform.eulerAngles.y > 90f && !b)
             {
+                b = true;
+
                 image.color = changeColor;
+                imgShadow.effectDistance = new Vector2(-imgShadow.effectDistance.x, imgShadow.effectDistance.y);
             }
         });
 
@@ -46,10 +55,15 @@ public class ChapterUI : MonoBehaviour
 
     public void CloseStage()
     {
+        bool b = false;
+
         image.transform.DORotate(Vector3.zero, rotateDur).OnUpdate(() => {
-            if (image.transform.eulerAngles.y < 90f)
+            if (image.transform.eulerAngles.y < 90f && !b)
             {
+                b = true;
+
                 image.color = originalColor;
+                imgShadow.effectDistance = new Vector2(-imgShadow.effectDistance.x, imgShadow.effectDistance.y);
             }
         });
 

@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using System;
 
-public class ChapterSelectUIHandler : UI
+public class ChapterSelectUIHandler : UIHandler
 {
     private float sizeX = 650f;
 
@@ -22,11 +22,16 @@ public class ChapterSelectUIHandler : UI
 
     private Tween moveChapter;
 
-    public UI stageSelectHandler;
+    public UIHandler stageSelectHandler;
 
     [Header("¹öÆ°UI")]
     public CanvasGroup buttonUI;
     private ButtonUIHandler buttonUIHandler;
+
+    [Header("µÞ¹è°æ")]
+    public List<CanvasGroup> bgGroup = new List<CanvasGroup>();
+
+    private bool canInteract = false;
 
     private void Start()
     {
@@ -67,6 +72,8 @@ public class ChapterSelectUIHandler : UI
 
     protected override void OnOpenUI()
     {
+        if (!canInteract) return;
+
         if (Input.GetMouseButtonDown(0))
         {
             StartDrag();
@@ -95,7 +102,7 @@ public class ChapterSelectUIHandler : UI
 
         Vector3 dir = dragPos - dragStartPos;
 
-        transform.localPosition += dir.normalized * dir.magnitude * 2f;
+        transform.localPosition += dir.normalized * dir.magnitude;
         transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x, -sizeX * maxChapterIdx, 0f), 
                                   transform.localPosition.y);
 
@@ -128,6 +135,7 @@ public class ChapterSelectUIHandler : UI
 
     private void EndDrag()
     {
+        ShowBG(currentChapterIdx);
         moveChapter = transform.DOLocalMoveX(-sizeX * currentChapterIdx, 0.33f);
     }
 
@@ -140,7 +148,11 @@ public class ChapterSelectUIHandler : UI
     public override void Open()
     {
         base.Open();
-        this.transform.DOLocalMoveY(transform.localPosition.y + 1920f, 1.33f).SetEase(Ease.InOutQuad);
+        this.transform.DOLocalMoveY(transform.localPosition.y + 1920f, 1.33f)
+            .SetEase(Ease.InOutQuad)
+            .OnComplete(() => {
+                canInteract = true;
+            });
 
         buttonUI.DOFade(1f, 0.5f)
             .SetDelay(1f);
@@ -152,6 +164,7 @@ public class ChapterSelectUIHandler : UI
                 //buttonUI.alpha = 1f;
                 buttonUI.interactable = true;
                 buttonUI.blocksRaycasts = true;
+                ShowBG(currentChapterIdx);
             })
             .SetEase(Ease.OutSine);
 
@@ -159,5 +172,14 @@ public class ChapterSelectUIHandler : UI
             .SetDelay(1f)
             .From(true)
             .SetEase(Ease.OutSine);
+    }
+
+    private void ShowBG(int idx)
+    {
+        for (int i = 0; i < bgGroup.Count; i++)
+        {
+            bgGroup[i].DOFade((i.Equals(idx) ? 1f : 0f), 0.7f)
+                .SetEase(Ease.OutSine);
+        }
     }
 }

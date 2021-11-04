@@ -44,8 +44,6 @@ public class ClockHandler : MonoBehaviour
                     GameManager.Instance.timeLimit = 0;
                     return;
                 }
-
-                GameManager.Instance.onUpdateUI.Invoke();
             }
 
             th.ChangeTime((TimeDay)timeIdx);
@@ -56,6 +54,8 @@ public class ClockHandler : MonoBehaviour
                 .OnComplete(() => { canChangeTime = true; });
 
             ChangeTimeText(th.currentTimeDay);
+
+            GameManager.Instance.onUpdateUI.Invoke();
         });
     }
 

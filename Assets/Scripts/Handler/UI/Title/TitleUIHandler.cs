@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public class TitleUIHandler : UI
+public class TitleUIHandler : UIHandler
 {
-    public UI chapterSelectHandler;
+    public UIHandler chapterSelectHandler;
     public Text touchText;
 
     private Tween touchTween;

@@ -69,6 +69,9 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public CanvasGroup loadImg;
+    private readonly float changeDur = 1.2f;
+
     public int chapter = 1;
     public int stage = 1;
 
@@ -87,12 +90,52 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public UnityEvent onFailed = new UnityEvent();
 
+    public bool isGemCollected = false;
+
     public void LoadScene(string sceneName)
+    {
+        loadImg.blocksRaycasts = true;
+
+        loadImg.DOFade(1f, changeDur)
+            .OnComplete(() => 
+            {
+                ClearScene();
+                StartCoroutine(Loading(sceneName));
+            });
+    }
+
+    private void ClearScene()
     {
         moveLimit = 10;
         timeLimit = 3;
 
+        isGemCollected = false;
+
         DOTween.KillAll();
-        SceneManager.LoadScene(sceneName);
+        PoolManager.ResetPool();
+
+    }
+
+    IEnumerator Loading(string sceneName)
+    { 
+        yield return null;
+
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName); 
+        op.allowSceneActivation = false;
+
+        while (!op.isDone) 
+        { 
+            yield return null;
+
+            if (op.progress >= 0.9f)
+            {
+                op.allowSceneActivation = true;
+
+                loadImg.blocksRaycasts = false;
+                loadImg.DOFade(0f, changeDur);
+
+                yield break;
+            }
+        }
     }
 }
