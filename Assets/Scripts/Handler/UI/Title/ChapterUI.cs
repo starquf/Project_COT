@@ -16,6 +16,12 @@ public class ChapterUI : MonoBehaviour
     public float rotateDur = 0.5f;
     private WaitForSeconds changeColorWait;
 
+    public CanvasGroup lockBG;
+    private bool isLocked = false;
+
+    public Text reqText;
+    public int requireJem;
+
     private Color originalColor;
     public Color changeColor;
 
@@ -26,8 +32,10 @@ public class ChapterUI : MonoBehaviour
     private void Awake()
     {
         cvs = GetComponent<CanvasGroup>();
+        imgShadow = image.GetComponent<Shadow>();
 
-        imgShadow = image.GetComponent<Shadow>();    
+        reqText.text = requireJem.ToString();
+        lockBG.alpha = 0f;
     }
 
     private void Start()
@@ -72,7 +80,17 @@ public class ChapterUI : MonoBehaviour
 
     public void SetInteract(bool active)
     {
+        if (isLocked) return;
+
         cvs.interactable = active;
         cvs.blocksRaycasts = active;
+    }
+
+    public void SetLock()
+    {
+        SetInteract(false);
+
+        isLocked = true;
+        lockBG.alpha = 1f;
     }
 }

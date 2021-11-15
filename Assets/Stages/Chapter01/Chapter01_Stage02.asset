@@ -14,65 +14,62 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage:
     wallInfos:
-    - wallType: 0
-      position: {x: 0.5, y: 1, z: 0}
+    - wallType: 1
+      position: {x: -0.5, y: -0.5, z: 0}
       rotation: 0
     - wallType: 1
-      position: {x: -0.5, y: -1, z: 0}
-      rotation: 0
-    - wallType: 3
-      position: {x: -1, y: 0.5, z: 0}
+      position: {x: -1, y: 0, z: 0}
       rotation: 90
     - wallType: 2
-      position: {x: 0.5, y: -1, z: 0}
+      position: {x: 0.5, y: -0.5, z: 0}
+      rotation: 0
+    - wallType: 2
+      position: {x: 0, y: 0, z: 0}
+      rotation: 90
+    - wallType: 2
+      position: {x: 1, y: 0, z: 0}
+      rotation: 90
+    - wallType: 0
+      position: {x: 0.5, y: 0.5, z: 0}
       rotation: 0
     - wallType: 0
-      position: {x: 1, y: 0.5, z: 0}
-      rotation: 90
-    - wallType: 1
-      position: {x: -1, y: -0.5, z: 0}
-      rotation: 90
-    - wallType: 2
-      position: {x: 0, y: -0.5, z: 0}
-      rotation: 90
-    - wallType: 2
-      position: {x: 1, y: -0.5, z: 0}
-      rotation: 90
-    - wallType: 2
-      position: {x: 0.5, y: 0, z: 0}
+      position: {x: 0.5, y: 1.5, z: 0}
       rotation: 0
-    - wallType: 3
-      position: {x: 0, y: 0.5, z: 0}
+    - wallType: 0
+      position: {x: 1, y: 1, z: 0}
       rotation: 90
     - wallType: 3
-      position: {x: 1, y: 0.5, z: 0}
+      position: {x: -1, y: 1, z: 0}
+      rotation: 90
+    - wallType: 3
+      position: {x: 0, y: 1, z: 0}
       rotation: 90
     tileInfos:
     - tileType: 0
-      position: {x: 0, y: 0, z: 0}
+      position: {x: 1, y: 1.5, z: 0}
     - tileType: 0
-      position: {x: 1, y: 1, z: 0}
+      position: {x: 0, y: 1.5, z: 0}
     - tileType: 0
-      position: {x: 1, y: 0, z: 0}
+      position: {x: 1, y: 0.5, z: 0}
     - tileType: 0
-      position: {x: 1, y: -1, z: 0}
+      position: {x: -1, y: 1.5, z: 0}
     - tileType: 0
-      position: {x: 0, y: -1, z: 0}
+      position: {x: 0, y: 0.5, z: 0}
     - tileType: 0
-      position: {x: -1, y: 0, z: 0}
+      position: {x: -1, y: 0.5, z: 0}
     - tileType: 0
-      position: {x: -1, y: 1, z: 0}
+      position: {x: 1, y: -0.5, z: 0}
     - tileType: 0
-      position: {x: 0, y: 1, z: 0}
+      position: {x: 0, y: -0.5, z: 0}
     - tileType: 0
-      position: {x: -1, y: -1, z: 0}
+      position: {x: -1, y: -0.5, z: 0}
     objInfos:
     - objType: 0
-      position: {x: -1, y: -1, z: 0}
+      position: {x: -1, y: -0.5, z: 0}
     - objType: 1
-      position: {x: 1, y: 1, z: 0}
+      position: {x: 1, y: 1.5, z: 0}
     - objType: 3
-      position: {x: 1, y: -1, z: 0}
-    moveLimit: 10
-    timeLimit: 3
+      position: {x: 0, y: 1.5, z: 0}
+    moveLimit: 4
+    timeLimit: 2
     cameraSize: 4

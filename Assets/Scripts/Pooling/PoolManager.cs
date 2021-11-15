@@ -11,8 +11,16 @@ public class PoolManager
     {
         Type t = typeof(T);
 
+        foreach (string key in poolDic.Keys)
+        {
+            if (key.Equals(t.ToString()))
+            {
+                return;
+            }
+        }
+
         ObjectPooling<T> pool = new ObjectPooling<T>(prefab, parent, count);
-        
+
         poolDic.Add(t.ToString(), pool);
     }
 

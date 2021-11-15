@@ -25,6 +25,10 @@ public class ClearUIHandler : MonoBehaviour
 
     private List<Image> stars = new List<Image>();
 
+    [Header("소리 관련")]
+    public GameObject clearSound;
+    public GameObject failSound;
+
     private void Start()
     {
         cvs = GetComponent<CanvasGroup>();
@@ -42,6 +46,7 @@ public class ClearUIHandler : MonoBehaviour
         GameManager.Instance.onClear.AddListener(ShowClear);
         GameManager.Instance.onFailed.AddListener(ShowFail);
 
+        replayBtn.onClick.AddListener(() => { GameManager.Instance.LoadScene("InGame"); });
         homeBtn.onClick.AddListener(() => { GameManager.Instance.LoadScene("Title"); });
     }
 
@@ -51,6 +56,26 @@ public class ClearUIHandler : MonoBehaviour
 
         SetStar(GameManager.Instance.isGemCollected ? 3 : 2);
         cvs.blocksRaycasts = true;
+
+        int chap = GameManager.Instance.chapter;
+        int stag = GameManager.Instance.stage;
+
+        GameInfoVO gameInfo = GameManager.Instance.gameInfo;
+        StageInfoVO stageInfo = gameInfo.chapters[chap].stages[stag];
+
+        if (stageInfo.starCount < 3)
+        {
+            if (GameManager.Instance.isGemCollected)
+                gameInfo.jemCount++;
+        }
+
+        stageInfo.isCleared = true;
+        stageInfo.starCount = GameManager.Instance.isGemCollected ? 3 : 2;
+
+
+        GameManager.Instance.SaveGameInfo();
+
+        Instantiate(clearSound, null);
 
         ShowPanel();
     }
@@ -62,6 +87,8 @@ public class ClearUIHandler : MonoBehaviour
 
         cvs.blocksRaycasts = true;
         nextBtn.gameObject.SetActive(false);
+
+        Instantiate(failSound, null);
 
         ShowPanel();
     }
@@ -77,7 +104,6 @@ public class ClearUIHandler : MonoBehaviour
             .AppendCallback(() => ShowButton())
             .AppendInterval(0.5f)
             .AppendCallback(() => cvs.interactable = true);
-
     }
 
     private void ShowButton()

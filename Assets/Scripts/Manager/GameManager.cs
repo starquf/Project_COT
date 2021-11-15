@@ -1,3 +1,4 @@
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,15 +36,18 @@ public class GameManager : MonoBehaviour
         if (instance == null)                       // 만약 instance가 비어있다면
         {
             instance = this;
-            DontDestroyOnLoad(this.gameObject);
         }
         else if (instance != this)                   // 비어있진 않은데 instance가 자신이 아니라면
         {
             Destroy(this.gameObject);
+            return;
         }
 
-        SetResolution();
-        Application.targetFrameRate = 60;
+        DontDestroyOnLoad(this.gameObject);
+
+        Init();
+
+        //SetResolution();
     }
 
     private void SetResolution()
@@ -69,8 +73,12 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public GameInfoVO gameInfo;
+    private readonly string fileName = "gameinfo.txt";
+    private string path;
+
     public CanvasGroup loadImg;
-    private readonly float changeDur = 1.2f;
+    private readonly float changeDur = 0.8f;
 
     public int chapter = 1;
     public int stage = 1;
@@ -92,16 +100,36 @@ public class GameManager : MonoBehaviour
 
     public bool isGemCollected = false;
 
+    private void Init()
+    {
+        Screen.SetResolution(1440, 2960, true);
+        Application.targetFrameRate = 60;
+
+        gameInfo = new GameInfoVO();
+
+        path = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (File.Exists(path))
+        {
+            LoadGameInfo();
+        }
+        else
+        {
+            SaveGameInfo();
+        }
+    }
+
     public void LoadScene(string sceneName)
     {
         loadImg.blocksRaycasts = true;
 
         loadImg.DOFade(1f, changeDur)
-            .OnComplete(() => 
+            .OnComplete(() =>
             {
                 ClearScene();
                 StartCoroutine(Loading(sceneName));
-            });
+            })
+            .SetEase(Ease.Linear);
     }
 
     private void ClearScene()
@@ -117,14 +145,14 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator Loading(string sceneName)
-    { 
+    {
         yield return null;
 
-        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName); 
+        AsyncOperation op = SceneManager.LoadSceneAsync(sceneName);
         op.allowSceneActivation = false;
 
-        while (!op.isDone) 
-        { 
+        while (!op.isDone)
+        {
             yield return null;
 
             if (op.progress >= 0.9f)
@@ -132,10 +160,29 @@ public class GameManager : MonoBehaviour
                 op.allowSceneActivation = true;
 
                 loadImg.blocksRaycasts = false;
-                loadImg.DOFade(0f, changeDur);
+                loadImg.DOFade(0f, changeDur - 0.1f)
+                    .SetEase(Ease.Linear);
 
                 yield break;
             }
         }
+    }
+
+    public void LoadGameInfo()
+    {
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+
+            gameInfo = JsonUtility.FromJson<GameInfoVO>(json);
+        }
+    }
+
+    [ContextMenu("현재 정보 저장하기")]
+    public void SaveGameInfo()
+    {
+        string json = JsonUtility.ToJson(gameInfo);
+
+        File.WriteAllText(path, json);
     }
 }

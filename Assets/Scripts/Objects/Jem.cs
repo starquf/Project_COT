@@ -7,6 +7,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class Jem : StageObj
 {
+    public GameObject jemSound;
+
     public Transform moveObj;
     public SpriteRenderer jemSr;
     public Light2D l2d;
@@ -17,6 +19,14 @@ public class Jem : StageObj
 
     private void Start()
     {
+        int chap = GameManager.Instance.chapter;
+        int stag = GameManager.Instance.stage;
+
+        if (GameManager.Instance.gameInfo.chapters[chap].stages[stag].starCount >= 3)
+        {
+            jemSr.color = new Color(1f, 1f, 1f, 0.3f);   
+        }
+
         moveTween = moveObj.DOMoveY(transform.position.y + 0.05f, changeDur + 0.1f)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutQuad);
@@ -30,6 +40,7 @@ public class Jem : StageObj
 
         moveTween.Kill();
 
+        Instantiate(jemSound, null);
 
         float startY = transform.position.y;
 

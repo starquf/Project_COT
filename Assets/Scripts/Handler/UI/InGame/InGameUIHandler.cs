@@ -112,7 +112,7 @@ public class InGameUIHandler : MonoBehaviour
 
                 if (tl == 0)
                 {
-                    timeText.DOColor(Color.red, 0.55f)
+                    timeText.DOColor(Color.red, 0.45f)
                         .SetEase(Ease.Linear)
                         .SetLoops(-1, LoopType.Yoyo);
                 }

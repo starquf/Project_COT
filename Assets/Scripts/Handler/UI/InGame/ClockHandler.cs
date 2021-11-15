@@ -14,12 +14,7 @@ public class ClockHandler : MonoBehaviour
     [Space(10f)]
     [SerializeField] private float timeChangeDur = 1f;
 
-    [Header("시간 텍스트 설정")]
-    public Text ampmText = null;
-    public Text timeText = null;
-
     private bool canChangeTime = true;
-    private int currentTime = 5;
 
     private void Start()
     {
@@ -49,11 +44,12 @@ public class ClockHandler : MonoBehaviour
             th.ChangeTime((TimeDay)timeIdx);
 
             nextTimeImg.DOColor(th.GetTimeColor((TimeDay)((timeIdx + 1) % ((int)TimeDay.NIGHT + 1))), th.ColorChangeDur);
+            // nextTimeImg.DOColor(th.GetTimeColor((TimeDay)timeIdx), th.ColorChangeDur);
 
             timeImg.DORotate(new Vector3(0f, 0f, -90f * timeIdx), timeChangeDur, RotateMode.Fast)
                 .OnComplete(() => { canChangeTime = true; });
 
-            ChangeTimeText(th.currentTimeDay);
+            //ChangeTimeText(th.currentTimeDay);
 
             GameManager.Instance.onUpdateUI.Invoke();
         });
@@ -61,38 +57,27 @@ public class ClockHandler : MonoBehaviour
 
     private void ChangeTimeText(TimeDay time)
     {
-        bool isAM = false;
-        int targetTime = 0;
 
         switch (time)
         {
             case TimeDay.DAWN:      // AM 5:00
-                isAM = true;
-
-                currentTime = 0;
-                targetTime = 5;
 
                 break;
 
             case TimeDay.MORNING:   // PM 1:00
-                isAM = false;
-                targetTime = 1;
 
                 break;
 
             case TimeDay.AFTERNOON: // PM 7:00
-                isAM = false;
-                targetTime = 7;
 
                 break;
 
             case TimeDay.NIGHT:     // AM 12:00
-                isAM = true;
-                targetTime = 12;
 
                 break;
         }
 
+        /*
         Sequence timeSeq = DOTween.Sequence()
             .Append(
                 DOTween.To(() => currentTime,
@@ -105,5 +90,6 @@ public class ClockHandler : MonoBehaviour
                 timeChangeDur))
             .InsertCallback(timeChangeDur / 2f, () => { ampmText.text = isAM ? "AM" : "PM"; })
             .AppendCallback(() => { currentTime = targetTime; });
+        */
     }
 }

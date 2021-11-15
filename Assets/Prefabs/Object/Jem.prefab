@@ -170,6 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objType: 3
+  jemSound: {fileID: 5411953664154803654, guid: b0ae3b1ec751b0b48b87af97405b495c, type: 3}
   moveObj: {fileID: 4536827009414183123}
   jemSr: {fileID: 4536827009354303611}
   l2d: {fileID: 4536827008709807857}

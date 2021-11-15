@@ -23,7 +23,10 @@ public class StageCreateHandler : MonoBehaviour
     [Header("옵젝 프리팹")]
     public List<GameObject> stageObjs = new List<GameObject>();
 
-    private void Start()
+    [Header("오프셋 설정")]
+    public Vector3 offset = Vector3.zero;
+
+    private void Awake()
     {
         int chapterIdx = GameManager.Instance.chapter;
         int stageIdx = GameManager.Instance.stage;
@@ -33,6 +36,9 @@ public class StageCreateHandler : MonoBehaviour
 
         if (stageInfo != null)
         {
+            GameManager.Instance.moveLimit = stageInfo.moveLimit;
+            GameManager.Instance.timeLimit = stageInfo.timeLimit;
+
             CreateStage();
         }
         else
@@ -52,7 +58,7 @@ public class StageCreateHandler : MonoBehaviour
         {
             createIdx = (int)tileInfo.tileType;
 
-            Instantiate(tileObjs[createIdx], tileInfo.position, Quaternion.identity, tileTrans);
+            Instantiate(tileObjs[createIdx], tileInfo.position + offset, Quaternion.identity, tileTrans);
         }
 
         // 벽 생성
@@ -60,14 +66,14 @@ public class StageCreateHandler : MonoBehaviour
         {
             createIdx = (int)wallInfo.wallType;
 
-            Instantiate(wallObjs[createIdx], wallInfo.position, Quaternion.AngleAxis(wallInfo.rotation, Vector3.forward), wallTrans);
+            Instantiate(wallObjs[createIdx], wallInfo.position + offset, Quaternion.AngleAxis(wallInfo.rotation, Vector3.forward), wallTrans);
         }
 
         foreach (var objInfo in stageInfo.objInfos)
         {
             createIdx = (int)objInfo.objType;
 
-            Instantiate(stageObjs[createIdx], objInfo.position, Quaternion.identity, objTrans);
+            Instantiate(stageObjs[createIdx], objInfo.position + offset, Quaternion.identity, objTrans);
         }
     }
 }

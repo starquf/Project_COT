@@ -35,6 +35,20 @@ public class ChapterSelectUIHandler : UIHandler
 
     private void Start()
     {
+        GameInfoVO gameInfo = GameManager.Instance.gameInfo;
+
+        if (gameInfo.chapters.Count < chapterUIs.Count)
+        {
+            while (gameInfo.chapters.Count < chapterUIs.Count)
+            {
+                gameInfo.chapters.Add(new ChapterInfoVO());
+            }
+
+            GameManager.Instance.SaveGameInfo();
+        }
+
+        LockChapter(gameInfo.jemCount);
+
         buttonUIHandler = buttonUI.GetComponent<ButtonUIHandler>();
 
         buttonUI.alpha = 0f;
@@ -67,6 +81,17 @@ public class ChapterSelectUIHandler : UIHandler
                 chapterUIs[a].ShowStage();
                 ShowStageUI();
             });
+        }
+    }
+
+    private void LockChapter(int jemCount)
+    {
+        for (int i = 0; i < chapterUIs.Count; i++)
+        {
+            if (chapterUIs[i].requireJem > jemCount)
+            {
+                chapterUIs[i].SetLock();
+            }
         }
     }
 
@@ -136,6 +161,8 @@ public class ChapterSelectUIHandler : UIHandler
     private void EndDrag()
     {
         ShowBG(currentChapterIdx);
+
+        GameManager.Instance.chapter = currentChapterIdx;
         moveChapter = transform.DOLocalMoveX(-sizeX * currentChapterIdx, 0.33f);
     }
 

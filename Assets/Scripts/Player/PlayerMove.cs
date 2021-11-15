@@ -23,6 +23,10 @@ public class PlayerMove : MonoBehaviour
     private Vector3 bigScale = Vector3.zero;
     private Vector3 normalScale = Vector3.zero;
 
+    [Header("소리 관련")]
+    public GameObject moveSound;
+    public GameObject disableSound;
+
     private void Start()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -41,6 +45,9 @@ public class PlayerMove : MonoBehaviour
         });
 
         GameManager.Instance.onFailed.AddListener(() => isEnable = false);
+
+        PoolManager.CreatePool<Sound_Disable>(disableSound, transform, 3);
+        PoolManager.CreatePool<Sound_Move>(moveSound, transform, 3);
     }
 
     private void Update()
@@ -224,6 +231,8 @@ public class PlayerMove : MonoBehaviour
             groundIt?.Interact();
             objIt?.Interact();
 
+            PoolManager.GetItem<Sound_Move>();
+
             if (!isRepeat)
             {
                 GameManager.Instance.moveLimit--;
@@ -264,6 +273,8 @@ public class PlayerMove : MonoBehaviour
         {
             Camera.main.DOShakePosition(0.2f, 0.02f, 22, 90, false);
         }
+
+        PoolManager.GetItem<Sound_Disable>();
 
         GameManager.Instance.timeDayhandler.CanChangeTime = true;
         canMove = true;
