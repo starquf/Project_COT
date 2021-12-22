@@ -7,9 +7,9 @@ public class GameInfoVO
 {
     public int jemCount = 0;
 
-    public float masterVolume = 1f;
-    public float bgmVolume = 1f;
-    public float effectVolume = 1f;
+    public float masterVolume = 0f;
+    public float bgmVolume = 0f;
+    public float effectVolume = 0f;
 
     public List<ChapterInfoVO> chapters = new List<ChapterInfoVO>();
 }

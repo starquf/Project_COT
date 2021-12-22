@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class Wall : MonoBehaviour
 {
+    // 벽 스크립트
+
     private Collider2D coll = null;
     private SpriteRenderer sr;
 
@@ -28,6 +30,7 @@ public class Wall : MonoBehaviour
         InitWall();
     }
 
+    // 초기화
     private void InitWall()
     {
         if (wallTime.Equals(TimeDay.DAWN))
@@ -37,8 +40,10 @@ public class Wall : MonoBehaviour
         }
     }
 
+    // 시간이 바뀔 떄
     private void OnChangeTime(TimeDay time, Color dayColor, float changeDur)
     {
+        // 현재 벽의 색깔과 바뀌는 시간의 색깔이 같다면
         if (time.Equals(wallTime))
         {
             changeCor = StartCoroutine(EnableWall(false, changeDur));
@@ -55,6 +60,7 @@ public class Wall : MonoBehaviour
         }
     }
 
+    // 벽 콜라이더 on/off
     private IEnumerator EnableWall(bool enable, float changeDur)
     {
         sr.DOFade(enable ? 1f : 0f, changeDur + 0.1f);

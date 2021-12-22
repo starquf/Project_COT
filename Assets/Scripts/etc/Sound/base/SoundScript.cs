@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SoundScript : MonoBehaviour
 {
+    // 사운드가 생성되고나서 비활성화를 해주는 스크립트
+
     [SerializeField]
     protected float waitTime = 1f;
 

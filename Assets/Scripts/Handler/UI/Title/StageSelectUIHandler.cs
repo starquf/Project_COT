@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class StageSelectUIHandler : UIHandler
 {
+    // 스테이지 UI를 관리하는 핸들러
+
     [Header("스테이지 UI 설정")]
     [SerializeField] private List<StageBtnScript> stageButtons = new List<StageBtnScript>();
 
@@ -50,9 +52,20 @@ public class StageSelectUIHandler : UIHandler
 
         cvs.alpha = 1;
 
+        GameInfoVO gameInfo = GameManager.Instance.gameInfo;
+        ChapterInfoVO chapterInfo = gameInfo.chapters[GameManager.Instance.chapter];
+        StageInfoVO lastStageInfo = null;
+
+        print(GameManager.Instance.chapter);
+
         for (int i = 0; i < stageButtons.Count; i++)
         {
-            stageButtons[i].ShowStage(i * 0.1f + 0.3f);
+            StageInfoVO stageInfo = chapterInfo.stages[i];
+
+            stageButtons[i].ShowStar(stageInfo.starCount);
+            stageButtons[i].ShowStage(i * 0.1f + 0.3f, lastStageInfo == null || lastStageInfo.isCleared);
+
+            lastStageInfo = stageInfo;
         }
     }
 

@@ -24,7 +24,7 @@ public class Jem : StageObj
 
         if (GameManager.Instance.gameInfo.chapters[chap].stages[stag].starCount >= 3)
         {
-            jemSr.color = new Color(1f, 1f, 1f, 0.3f);   
+            jemSr.color = new Color(1f, 1f, 1f, 0.4f);   
         }
 
         moveTween = moveObj.DOMoveY(transform.position.y + 0.05f, changeDur + 0.1f)

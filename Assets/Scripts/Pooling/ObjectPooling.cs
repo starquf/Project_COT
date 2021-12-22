@@ -26,18 +26,19 @@ public class ObjectPooling<T> : IPool where T : MonoBehaviour
     public T GetOrCreate()
     {
         T t = m_queue.Peek();
-        if (t.gameObject.activeSelf) //맨처음에 있는 원소조차 활성화되어있다면 큐가 전부 사용중이라는 뜻
+        if (t.gameObject.activeSelf)
         {
             GameObject temp = GameObject.Instantiate(prefab, parent);
             t = temp.GetComponent<T>();
-            t.gameObject.SetActive(true);
         }
         else
         {
             t = m_queue.Dequeue();
-            t.gameObject.SetActive(true);
         }
-        m_queue.Enqueue(t); //빼내었거나 새로 생성한 애를 맨 마지막에 넣는다.
+
+        t.gameObject.SetActive(true);
+
+        m_queue.Enqueue(t);
         return t;
     }
 }

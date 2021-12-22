@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class StageObj : MonoBehaviour, IMoveable, IInteractable
 {
+    // 스테이지 요소 기본 뼈대
+
     public StageObjType objType;
 
     public virtual bool CheckMoveable(Vector3 dir)

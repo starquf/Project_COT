@@ -71,5 +71,5 @@ MonoBehaviour:
     - objType: 3
       position: {x: 0, y: 1.5, z: 0}
     moveLimit: 4
-    timeLimit: 2
+    timeLimit: 1
     cameraSize: 4

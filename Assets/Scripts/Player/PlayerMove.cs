@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class PlayerMove : MonoBehaviour
 {
+    // 플레이어 이동 관련
+
     private PlayerInput playerInput = null;
 
     Vector3 clickPos = Vector3.zero;
@@ -31,17 +33,33 @@ public class PlayerMove : MonoBehaviour
     {
         playerInput = GetComponent<PlayerInput>();
 
+        #region Init
         whatIsWall = LayerMask.GetMask("WALL");
         whatIsGround = LayerMask.GetMask("GROUND");
         whatIsObj = LayerMask.GetMask("STAGEOBJ");
 
         normalScale = transform.localScale;
         bigScale = new Vector3(normalScale.x + 0.1f, normalScale.y + 0.1f, 1f);
+        #endregion
 
         GameManager.Instance.onClear.AddListener(() => 
         { 
             isEnable = false;
             isCleared = true;
+        });
+
+        GameManager.Instance.onUnPause.AddListener(() => 
+        {
+            clickPos = playerInput.GetMouseWorldPos();
+
+            isEnable = true;
+        });
+
+        GameManager.Instance.onPause.AddListener(() => 
+        {
+            //clickPos = playerInput.GetMouseWorldPos();
+
+            isEnable = false; 
         });
 
         GameManager.Instance.onFailed.AddListener(() => isEnable = false);
@@ -57,6 +75,7 @@ public class PlayerMove : MonoBehaviour
         GetDrag();
     }
 
+    // 드레그 체크
     private void GetDrag()
     {
         if (playerInput.clickDown)
@@ -94,6 +113,7 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    // 현재 땅이 이동 가능한지 체크
     private bool CheckCurrentGround()
     {
         Collider2D coll = Physics2D.OverlapPoint(transform.position, whatIsGround);
@@ -102,6 +122,7 @@ public class PlayerMove : MonoBehaviour
         return CheckMoveable(Vector3.zero, coll);
     }
 
+    // 이동하려는 방향의 땅 체크
     private bool CheckGround(Vector3 dir, out IInteractable it, out TileType tileType)
     {
         it = null;
@@ -124,6 +145,7 @@ public class PlayerMove : MonoBehaviour
         return CheckMoveable(dir, coll, out it);
     }
 
+    // 현재 아이템이 이동 가능한지 체크
     private bool CheckCurrentObjMoveable()
     {
         Collider2D coll = Physics2D.OverlapPoint(transform.position, whatIsObj);
@@ -138,6 +160,7 @@ public class PlayerMove : MonoBehaviour
         return CheckMoveable(Vector3.zero, coll);
     }
 
+    // 이동하려는 곳의 아이템 체크
     private bool CheckObjMoveable(Vector3 dir, out IInteractable it)
     {
         it = null;
@@ -154,6 +177,7 @@ public class PlayerMove : MonoBehaviour
         return CheckMoveable(dir, coll, out it);
     }
 
+    // 이동 가능한지 체크
     private bool CheckMoveable(Vector3 dir, Collider2D coll)
     {
         if (coll == null)
@@ -193,8 +217,12 @@ public class PlayerMove : MonoBehaviour
         return true;
     }
 
+    // 이동
     private void Move(Vector3 dir, bool isRepeat = false)
     {
+        // 이동이 가능하지 않다면 리턴
+        if (!isEnable) return;
+
         IInteractable groundIt = null;
         IInteractable objIt = null;
 
@@ -233,23 +261,25 @@ public class PlayerMove : MonoBehaviour
 
             PoolManager.GetItem<Sound_Move>();
 
+            // 이동이 반복되지 않다면
             if (!isRepeat)
             {
                 GameManager.Instance.moveLimit--;
 
                 if (!isCleared && GameManager.Instance.moveLimit <= 0)
                 {
-                    // ㅋㅋ 이걸 못깨누
                     GameManager.Instance.onFailed?.Invoke();
                 }
 
                 GameManager.Instance.onUpdateUI.Invoke();
             }
 
+            // 물(빙판)이라면
             switch (tileType)
             {
                 case TileType.WATER:
 
+                    // 이동 반복
                     transform.DOMove(transform.position + dir, moveDur).OnComplete(() => { Move(dir, true); });
                     return;
             }

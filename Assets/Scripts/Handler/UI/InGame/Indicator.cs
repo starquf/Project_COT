@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class Indicator : MonoBehaviour
 {
+    // 이동하거나 시간을 이동할 때 나오는 -1 연출 프리팹에 들어가는 스크립트
+
     private Text indicatorText;
 
     public float showTime = 1f;

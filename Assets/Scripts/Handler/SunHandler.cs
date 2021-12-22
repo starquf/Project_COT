@@ -7,6 +7,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class SunHandler : MonoBehaviour
 {
+    // 태양/달의 연출을 담당하는 핸들러
+
     private SpriteRenderer sr;
     private Transform lightTrans;
     private Light2D l2D;
@@ -37,6 +39,7 @@ public class SunHandler : MonoBehaviour
         GameManager.Instance.onChangeTime.AddListener(ShowEffect);
     }
 
+    // 이동하는 연출
     public void ShowEffect(TimeDay currentDay, Color skyCol, float changeDur)
     {
         switch (currentDay)
@@ -89,6 +92,7 @@ public class SunHandler : MonoBehaviour
         }
     }
 
+    // 태양/달 위치 이동
     private void ChangePos(float posX, float dur, Action onChange, Ease ease = Ease.OutQuad)
     {
         transform.DOMoveX(posX, dur)
@@ -104,6 +108,7 @@ public class SunHandler : MonoBehaviour
             .SetEase(ease);
     }
 
+    // 빛의 각도 변경
     private void ChangeLightDir(Vector3 target)
     {
         Vector3 dir = target - transform.position;
@@ -112,6 +117,7 @@ public class SunHandler : MonoBehaviour
         lightTrans.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
+    // 빛의 세기, 색을 변경
     private void ChangeLightPar(Color lightColor, float dur, float intensity = 1f, float shadow = 0.25f)
     {
         l2D.color = lightColor;

@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class StageInfoPanelHandler : MonoBehaviour
 {
+    // 스테이지가 처음 시작할 때 스테이지 정보를 보여주는 UI 핸들러
+
     private CanvasGroup cvs;
 
     public Text stageText;

@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 516eef2879466704094b2f5c9aa6dcff, type: 3}
+  m_Name: Chapter03_Stage01
+  m_EditorClassIdentifier: 
+  stage:
+    wallInfos:
+    - wallType: 0
+      position: {x: -1, y: 0.75, z: 0}
+      rotation: 90
+    - wallType: 0
+      position: {x: 0, y: 0.75, z: 0}
+      rotation: 90
+    - wallType: 1
+      position: {x: 0, y: -0.25, z: 0}
+      rotation: 90
+    - wallType: 1
+      position: {x: -1, y: -0.25, z: 0}
+      rotation: 90
+    - wallType: 2
+      position: {x: -0.5, y: 1.25, z: 0}
+      rotation: 0
+    - wallType: 2
+      position: {x: -0.5, y: 0.25, z: 0}
+      rotation: 0
+    - wallType: 2
+      position: {x: -0.5, y: -0.75, z: 0}
+      rotation: 0
+    - wallType: 3
+      position: {x: 0.5, y: 1.25, z: 0}
+      rotation: 0
+    - wallType: 3
+      position: {x: 0.5, y: 0.25, z: 0}
+      rotation: 0
+    - wallType: 3
+      position: {x: 0.5, y: -0.75, z: 0}
+      rotation: 0
+    - wallType: 3
+      position: {x: 1, y: 0.75, z: 0}
+      rotation: 90
+    tileInfos:
+    - tileType: 0
+      position: {x: 1, y: 1.25, z: 0}
+    - tileType: 0
+      position: {x: 0, y: 1.25, z: 0}
+    - tileType: 0
+      position: {x: -1, y: 1.25, z: 0}
+    - tileType: 0
+      position: {x: 0, y: 0.25, z: 0}
+    - tileType: 0
+      position: {x: -1, y: 0.25, z: 0}
+    - tileType: 0
+      position: {x: 0, y: -0.75, z: 0}
+    - tileType: 0
+      position: {x: -1, y: -0.75, z: 0}
+    - tileType: 1
+      position: {x: 1, y: 0.25, z: 0}
+    - tileType: 1
+      position: {x: 1, y: -0.75, z: 0}
+    objInfos:
+    - objType: 0
+      position: {x: -1, y: -0.75, z: 0}
+    - objType: 1
+      position: {x: 1, y: 1.25, z: 0}
+    - objType: 3
+      position: {x: 0, y: -0.75, z: 0}
+    moveLimit: 4
+    timeLimit: 0
+    cameraSize: 4

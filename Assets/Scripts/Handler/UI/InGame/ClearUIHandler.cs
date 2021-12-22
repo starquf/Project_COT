@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class ClearUIHandler : MonoBehaviour
 {
+    // 스테이지가 클리어했을 때 나오는 UI
+
     private CanvasGroup cvs;
     private CanvasGroup clearBG;
 
@@ -34,6 +36,7 @@ public class ClearUIHandler : MonoBehaviour
         cvs = GetComponent<CanvasGroup>();
         clearBG = transform.GetChild(0).GetComponent<CanvasGroup>();
 
+        #region Init UI
         starBG.GetComponentsInChildren(stars);
         stars.RemoveAt(0);
 
@@ -41,15 +44,20 @@ public class ClearUIHandler : MonoBehaviour
 
         cvs.alpha = 0f;
         clearBG.alpha = 0f;
-        //clearBG.transform.localScale = new Vector3(0f, 0f, 1f);
+        #endregion
 
         GameManager.Instance.onClear.AddListener(ShowClear);
         GameManager.Instance.onFailed.AddListener(ShowFail);
 
         replayBtn.onClick.AddListener(() => { GameManager.Instance.LoadScene("InGame"); });
         homeBtn.onClick.AddListener(() => { GameManager.Instance.LoadScene("Title"); });
+        nextBtn.onClick.AddListener(() => {
+            GameManager.Instance.stage++;
+            GameManager.Instance.LoadScene("InGame"); 
+        });
     }
 
+    // 클리어했을 때
     private void ShowClear()
     {
         clearTxt.text = "C L E A R";
@@ -72,14 +80,19 @@ public class ClearUIHandler : MonoBehaviour
         stageInfo.isCleared = true;
         stageInfo.starCount = GameManager.Instance.isGemCollected ? 3 : 2;
 
-
         GameManager.Instance.SaveGameInfo();
+
+        if (GameManager.Instance.stage >= 4)
+        {
+            nextBtn.gameObject.SetActive(false);
+        }
 
         Instantiate(clearSound, null);
 
         ShowPanel();
     }
 
+    // 실패 했을 때
     private void ShowFail()
     {
         clearTxt.text = "F A I L E D";
@@ -93,6 +106,7 @@ public class ClearUIHandler : MonoBehaviour
         ShowPanel();
     }
 
+    // 패널 연출
     private void ShowPanel()
     {
         Sequence seq = DOTween.Sequence()
@@ -106,6 +120,7 @@ public class ClearUIHandler : MonoBehaviour
             .AppendCallback(() => cvs.interactable = true);
     }
 
+    // 버튼 연출 
     private void ShowButton()
     {
         List<CanvasGroup> btns = new List<CanvasGroup>();
@@ -122,6 +137,7 @@ public class ClearUIHandler : MonoBehaviour
         }
     }
 
+    // 별 갯수 설정
     private void SetStar(int starCount)
     {
         for (int i = 0; i < stars.Count; i++)
@@ -132,6 +148,7 @@ public class ClearUIHandler : MonoBehaviour
         }
     }
 
+    // 별 연출
     private void ShowStar()
     {
         Vector3 bigImg = new Vector3(1.3f, 1.3f, 1f);

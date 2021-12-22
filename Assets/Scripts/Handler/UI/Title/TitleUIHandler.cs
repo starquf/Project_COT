@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class TitleUIHandler : UIHandler
 {
+    // 타이틀을 보여주는 UI 핸들러
+
     public UIHandler chapterSelectHandler;
     public Text touchText;
 

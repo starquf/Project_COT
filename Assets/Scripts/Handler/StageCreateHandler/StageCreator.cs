@@ -5,6 +5,8 @@ using System.Linq;
 
 public class StageCreator : MonoBehaviour
 {
+    // [인스펙터 전용] 현재 스테이지에 있는 벽, 타일등의 정보를 가져와서 스테이지 정보를 만들어주는 스크립트
+
     [Header("가져올 부모")]
     public Transform tileTrans;
     public Transform wallTrans;

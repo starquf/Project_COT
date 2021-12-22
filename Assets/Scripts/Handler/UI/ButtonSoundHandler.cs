@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class ButtonSoundHandler : MonoBehaviour
 {
+    // 캔버스의 모든 버튼에 소리를 넣어주는 스크립트
+
     public GameObject btnSoundObj;
 
     private void Start()

@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class InGameUIHandler : MonoBehaviour
 {
+    // 인 게임 전체적인 UI를 담당하는 스크립트
+
     public Text moveText;
     public Text timeText;
     public Image timeImg;

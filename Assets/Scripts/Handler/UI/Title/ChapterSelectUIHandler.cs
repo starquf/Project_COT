@@ -7,6 +7,8 @@ using System;
 
 public class ChapterSelectUIHandler : UIHandler
 {
+    // 챕터 선택을 담당하는 UI핸들러
+
     private float sizeX = 650f;
 
     private readonly Vector3 bigSize = new Vector3(1f, 1f, 1f);
@@ -35,6 +37,7 @@ public class ChapterSelectUIHandler : UIHandler
 
     private void Start()
     {
+        #region Save Init
         GameInfoVO gameInfo = GameManager.Instance.gameInfo;
 
         if (gameInfo.chapters.Count < chapterUIs.Count)
@@ -46,6 +49,7 @@ public class ChapterSelectUIHandler : UIHandler
 
             GameManager.Instance.SaveGameInfo();
         }
+        #endregion
 
         LockChapter(gameInfo.jemCount);
 
@@ -84,6 +88,7 @@ public class ChapterSelectUIHandler : UIHandler
         }
     }
 
+    // 보석을 비교하여 챕터를 잠근다
     private void LockChapter(int jemCount)
     {
         for (int i = 0; i < chapterUIs.Count; i++)
@@ -97,6 +102,7 @@ public class ChapterSelectUIHandler : UIHandler
 
     protected override void OnOpenUI()
     {
+        // 상호작용 할 수 없다면
         if (!canInteract) return;
 
         if (Input.GetMouseButtonDown(0))
@@ -115,27 +121,36 @@ public class ChapterSelectUIHandler : UIHandler
         }
     }
 
+    // 드레그 시작
     private void StartDrag()
     {
         moveChapter?.Kill();
         dragStartPos.x = Input.mousePosition.x;
     }
 
+    // 드레그 도중
     private void OnDrag()
     {
         dragPos.x = Input.mousePosition.x;
 
+        // 드레그 하는 방향벡터
         Vector3 dir = dragPos - dragStartPos;
 
+        // 드레그 하는 만큼 이동
         transform.localPosition += dir.normalized * dir.magnitude;
+        // 드레그 할 수 있는 최대값 조정
         transform.localPosition = new Vector3(Mathf.Clamp(transform.localPosition.x, -sizeX * maxChapterIdx, 0f), 
                                   transform.localPosition.y);
 
+        // 이동 후 다시 초기화
         dragStartPos = dragPos;
 
+        // 현재 선택된 챕터의 크기를 넘어서 이동을 했다면
         if (transform.localPosition.x < (currentChapterIdx * -sizeX) - (sizeX / 2f))
         {
             chapterUIs[currentChapterIdx].transform.DOScale(smallSize, 0.33f);
+
+            // 다음 챕터를 가르킨다
             currentChapterIdx++;
             chapterUIs[currentChapterIdx].transform.DOScale(bigSize, 0.33f);
 
@@ -145,9 +160,12 @@ public class ChapterSelectUIHandler : UIHandler
             }
         }
 
+        // 현재 선택된 챕터의 크기를 넘어서 이동을 했다면
         if (transform.localPosition.x > (currentChapterIdx * -sizeX) + (sizeX / 2f))
         {
             chapterUIs[currentChapterIdx].transform.DOScale(smallSize, 0.33f);
+
+            // 이전 챕터를 가르킨다
             currentChapterIdx--;
             chapterUIs[currentChapterIdx].transform.DOScale(bigSize, 0.33f);
 
@@ -158,14 +176,19 @@ public class ChapterSelectUIHandler : UIHandler
         }
     }
 
+    // 드레그 끝
     private void EndDrag()
     {
         ShowBG(currentChapterIdx);
 
+        // 선택된 챕터를 현재 가르키는 챕터로 바꾼다
         GameManager.Instance.chapter = currentChapterIdx;
+
+        // 챕터 하이라이트 연출
         moveChapter = transform.DOLocalMoveX(-sizeX * currentChapterIdx, 0.33f);
     }
 
+    // 스테이지를 선택했을 때
     private void ShowStageUI()
     {
         stageSelectHandler.Open();
@@ -201,6 +224,7 @@ public class ChapterSelectUIHandler : UIHandler
             .SetEase(Ease.OutSine);
     }
 
+    // 배경을 보여주는 함수
     private void ShowBG(int idx)
     {
         for (int i = 0; i < bgGroup.Count; i++)

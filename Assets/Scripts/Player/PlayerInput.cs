@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
+    // 플레이어 조작 관련
     public bool clickDown { get; private set; }
     public bool clickUp { get; private set; }
 

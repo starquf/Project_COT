@@ -29,6 +29,9 @@ MonoBehaviour:
     - wallType: 3
       position: {x: 1, y: 1, z: 0}
       rotation: 90
+    - wallType: 3
+      position: {x: -1, y: 0, z: 0}
+      rotation: 90
     tileInfos:
     - tileType: 0
       position: {x: 1, y: 1.5, z: 0}
@@ -54,9 +57,9 @@ MonoBehaviour:
     - objType: 1
       position: {x: 1, y: 1.5, z: 0}
     - objType: 3
-      position: {x: 0, y: 1.5, z: 0}
+      position: {x: 1, y: 0.5, z: 0}
     - objType: 2
       position: {x: 0, y: 0.5, z: 0}
-    moveLimit: 10
-    timeLimit: 3
+    moveLimit: 4
+    timeLimit: 0
     cameraSize: 4

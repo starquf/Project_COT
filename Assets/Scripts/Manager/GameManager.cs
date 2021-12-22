@@ -98,6 +98,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public UnityEvent onFailed = new UnityEvent();
 
+    public UnityEvent onPause = new UnityEvent();
+    public UnityEvent onUnPause = new UnityEvent();
+
     public bool isGemCollected = false;
 
     private void Init()
@@ -119,6 +122,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // 씬 불러오기
     public void LoadScene(string sceneName)
     {
         loadImg.blocksRaycasts = true;
@@ -132,6 +136,7 @@ public class GameManager : MonoBehaviour
             .SetEase(Ease.Linear);
     }
 
+    // 씬 초기화
     private void ClearScene()
     {
         moveLimit = 10;
@@ -141,7 +146,6 @@ public class GameManager : MonoBehaviour
 
         DOTween.KillAll();
         PoolManager.ResetPool();
-
     }
 
     IEnumerator Loading(string sceneName)
@@ -184,5 +188,12 @@ public class GameManager : MonoBehaviour
         string json = JsonUtility.ToJson(gameInfo);
 
         File.WriteAllText(path, json);
+    }
+
+    [ContextMenu("현재 정보 초기화 (주의)")]
+    public void ResetGameInfo()
+    {
+        gameInfo = new GameInfoVO();
+        SaveGameInfo();
     }
 }

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class StageCreateHandler : MonoBehaviour
 {
+    // 스테이지 정보를 바탕으로 씬이 시작될 때 스테이지를 조립해주는 스크립트
+
     [SerializeField] private StageInfo stageInfo;
 
     [Header("챕터 정보들")]

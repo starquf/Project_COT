@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class Tile : MonoBehaviour, IMoveable, IInteractable
 {
+    // ¶¥ÀÇ ±âº» »À´ë
+
     public TileType tileType;
 
     private readonly Vector3 bigScale = new Vector3(0.93f, 0.93f, 1f);
